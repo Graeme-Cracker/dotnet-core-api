@@ -23,6 +23,7 @@ env:
     AZURE_TENANT_ID: ${{ secrets.TENANT_ID_AZURE }}
     AZURE_SUBSCRIPTION_ID: ${{ secrets.SUB_ID_AZURE }}
     CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+    PUBLISH_PROFILE: ${{ secrets.AZUREAPPSERVICE_PUBLISH_PROFILE }}
 jobs:
   build:
     runs-on: windows-latest
@@ -67,5 +68,5 @@ jobs:
         with:
           app-name: 'dotnet-webapp-in-azure'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_24849D4E1B414FDCB6BDFE84A5181260 }}
+          publish-profile: ${{ env.PUBLISH_PROFILE }}
           package: .
