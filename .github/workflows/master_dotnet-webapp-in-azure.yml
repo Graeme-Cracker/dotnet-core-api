@@ -8,7 +8,20 @@ on:
     branches:
       - master
   workflow_dispatch:
-
+env:
+    ACR_RESOURCE_GROUP: rg-for-app-service
+    AZURE_CONTAINER_REGISTRY: acrworkflow1692811819315
+    CLUSTER_NAME: AKScluster
+    CLUSTER_RESOURCE_GROUP: rg-for-app-service
+    CONTAINER_NAME: image-workflow-1692811819315
+    DEPLOYMENT_MANIFEST_PATH: |
+        manifests/deployment.yaml
+        manifests/service.yaml
+    CRED_USER_NAME: ${{ secrets.USER_AZURE }}
+    CRED_USER_PASS: ${{ secrets.PASS_AZURE }}
+    AZURE_CLIENT_ID: ${{ secrets.CLIENT_ID_AZURE }}
+    AZURE_TENANT_ID: ${{ secrets.TENANT_ID_AZURE }}
+    AZURE_SUBSCRIPTION_ID: ${{ secrets.SUB_ID_AZURE }}
 jobs:
   build:
     runs-on: windows-latest

@@ -5,14 +5,19 @@ name: autodeploy
             - master
     workflow_dispatch: {}
 env:
-    ACR_RESOURCE_GROUP: RGForAppService
+    ACR_RESOURCE_GROUP: rg-for-app-service
     AZURE_CONTAINER_REGISTRY: acrworkflow1692811819315
     CLUSTER_NAME: AKScluster
-    CLUSTER_RESOURCE_GROUP: RGForAppService
+    CLUSTER_RESOURCE_GROUP: rg-for-app-service
     CONTAINER_NAME: image-workflow-1692811819315
     DEPLOYMENT_MANIFEST_PATH: |
         manifests/deployment.yaml
         manifests/service.yaml
+    CRED_USER_NAME: ${{ secrets.USER_AZURE }}
+    CRED_USER_PASS: ${{ secrets.PASS_AZURE }}
+    AZURE_CLIENT_ID: ${{ secrets.CLIENT_ID_AZURE }}
+    AZURE_TENANT_ID: ${{ secrets.TENANT_ID_AZURE }}
+    AZURE_SUBSCRIPTION_ID: ${{ secrets.SUB_ID_AZURE }}
 jobs:
     buildImage:
         permissions:
@@ -24,9 +29,9 @@ jobs:
             - uses: azure/login@92a5484dfaf04ca78a94597f4f19fea633851fa2
               name: Azure login
               with:
-                client-id: ${{ secrets.AZURE_CLIENT_ID }}
-                subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-                tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+                client-id: ${{ env.AZURE_CLIENT_ID }}
+                subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+                tenant-id: ${{ env.AZURE_TENANT_ID }}
             - name: Build and push image to ACR
               run: az acr build --image ${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f Dockerfile ./
     deploy:
@@ -42,9 +47,9 @@ jobs:
             - uses: azure/login@92a5484dfaf04ca78a94597f4f19fea633851fa2
               name: Azure login
               with:
-                client-id: ${{ secrets.AZURE_CLIENT_ID }}
-                subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-                tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+                client-id: ${{ env.AZURE_CLIENT_ID }}
+                subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+                tenant-id: ${{ env.AZURE_TENANT_ID }}
             - uses: azure/use-kubelogin@v1
               name: Set up kubelogin for non-interactive login
               with:
