@@ -22,6 +22,7 @@ env:
     AZURE_CLIENT_ID: ${{ secrets.CLIENT_ID_AZURE }}
     AZURE_TENANT_ID: ${{ secrets.TENANT_ID_AZURE }}
     AZURE_SUBSCRIPTION_ID: ${{ secrets.SUB_ID_AZURE }}
+    CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
 jobs:
   build:
     runs-on: windows-latest

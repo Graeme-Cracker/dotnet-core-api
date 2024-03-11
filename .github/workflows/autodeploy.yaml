@@ -1,5 +1,5 @@
 name: autodeploy
-"on":
+on:
     push:
         branches:
             - master
@@ -18,6 +18,7 @@ env:
     AZURE_CLIENT_ID: ${{ secrets.CLIENT_ID_AZURE }}
     AZURE_TENANT_ID: ${{ secrets.TENANT_ID_AZURE }}
     AZURE_SUBSCRIPTION_ID: ${{ secrets.SUB_ID_AZURE }}
+    CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
 jobs:
     buildImage:
         permissions:
@@ -26,7 +27,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
-            - uses: azure/login@92a5484dfaf04ca78a94597f4f19fea633851fa2
+            - uses: azure/${{ env.CREDENTIALS }}
               name: Azure login
               with:
                 client-id: ${{ env.AZURE_CLIENT_ID }}
@@ -44,7 +45,7 @@ jobs:
             - buildImage
         steps:
             - uses: actions/checkout@v3
-            - uses: azure/login@92a5484dfaf04ca78a94597f4f19fea633851fa2
+            - uses: azure/${{ env.CREDENTIALS }}
               name: Azure login
               with:
                 client-id: ${{ env.AZURE_CLIENT_ID }}
